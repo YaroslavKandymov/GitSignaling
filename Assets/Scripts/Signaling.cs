@@ -7,17 +7,15 @@ using UnityEngine.Events;
 
 public class Signaling : MonoBehaviour
 {
-    [Range(0, 20)]
-    [SerializeField] private float _speedSound = 10;
+    [SerializeField] private float _speedSound;
 
     private AudioSource _signaling;
     private Coroutine _coroutine;
-    private bool value = false;
+    private bool maxVolumeReached = false;
 
     private void Awake()
     {
         _signaling = GetComponent<AudioSource>();
-        _signaling.volume = 0;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -43,21 +41,21 @@ public class Signaling : MonoBehaviour
         _signaling.volume = 0;
         while (true)
         {
-            if (_signaling.volume >= 0 && value == false)
+            if (_signaling.volume >= 0 && maxVolumeReached == false)
             {
-                _signaling.volume += 0.001f * _speedSound;
+                _signaling.volume = Mathf.MoveTowards(_signaling.volume, 1, _speedSound * Time.deltaTime);
                 if (_signaling.volume >= 1)
                 {
-                    value = true;
+                    maxVolumeReached = true;
                 }
             }
 
-            if (_signaling.volume <= 1 && value)
+            if (_signaling.volume <= 1 && maxVolumeReached)
             {
-                _signaling.volume -= 0.001f * _speedSound;
+                _signaling.volume = Mathf.MoveTowards(_signaling.volume, 0, _speedSound * Time.deltaTime);
                 if (_signaling.volume <= 0)
                 {
-                    value = false;
+                    maxVolumeReached = false;
                 }
             }
 

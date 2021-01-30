@@ -6,26 +6,13 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
+    private float _deltaX;
+    private float _deltaZ;
+
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(0, 0, _speed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(_speed * Time.deltaTime * -1, 0, 0);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(_speed * Time.deltaTime, 0, 0);
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(0, 0, _speed * Time.deltaTime * -1);
-        }
+        _deltaX = Input.GetAxis("Horizontal") * _speed;
+        _deltaZ = Input.GetAxis("Vertical") * _speed;
+        transform.Translate(_deltaX * Time.deltaTime, 0 , _deltaZ * Time.deltaTime);
     }
 }
