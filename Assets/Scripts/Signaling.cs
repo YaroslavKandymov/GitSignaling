@@ -11,7 +11,7 @@ public class Signaling : MonoBehaviour
 
     private AudioSource _signaling;
     private Coroutine _coroutine;
-    private bool maxVolumeReached = false;
+    private bool _maxVolumeReached = false;
 
     private void Awake()
     {
@@ -30,6 +30,7 @@ public class Signaling : MonoBehaviour
     private void OnTriggerExit(Collider collision)
     {
         _signaling.Stop();
+
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
@@ -41,21 +42,21 @@ public class Signaling : MonoBehaviour
         _signaling.volume = 0;
         while (true)
         {
-            if (_signaling.volume >= 0 && maxVolumeReached == false)
+            if (_signaling.volume >= 0 && _maxVolumeReached == false)
             {
                 _signaling.volume = Mathf.MoveTowards(_signaling.volume, 1, _speedSound * Time.deltaTime);
                 if (_signaling.volume >= 1)
                 {
-                    maxVolumeReached = true;
+                    _maxVolumeReached = true;
                 }
             }
 
-            if (_signaling.volume <= 1 && maxVolumeReached)
+            if (_signaling.volume <= 1 && _maxVolumeReached)
             {
                 _signaling.volume = Mathf.MoveTowards(_signaling.volume, 0, _speedSound * Time.deltaTime);
                 if (_signaling.volume <= 0)
                 {
-                    maxVolumeReached = false;
+                    _maxVolumeReached = false;
                 }
             }
 
